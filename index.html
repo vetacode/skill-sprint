@@ -4,56 +4,108 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Skill Sprint 5 Menit</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body
-    class="bg-gradient-to-br from-blue-500 to-blue-800 min-h-screen text-white flex items-center justify-center"
-  >
-    <div class="w-full max-w-md p-4">
-      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-5 shadow-xl">
-        <h1 class="text-xl font-bold mb-2">⚡ Skill Sprint</h1>
-        <p class="text-sm opacity-80 mb-4">Upgrade skill dalam 5 menit</p>
 
-        <!-- Streak -->
-        <div class="mb-4">
-          <p class="text-sm">🔥 Streak: <span id="streak">0</span> hari</p>
-          <div class="w-full bg-white/20 h-2 rounded mt-2">
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Style -->
+    <style>
+      .glass {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .glow {
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+      }
+
+      .btn-hover:hover {
+        transform: translateY(-2px) scale(1.02);
+        transition: 0.2s ease;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.4s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-500 via-blue-700 to-indigo-900 flex items-center justify-center text-white px-4"
+  >
+    <div class="w-full max-w-2xl">
+      <!-- Main Card -->
+      <div class="glass glow rounded-3xl p-8 shadow-2xl fade-in">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-bolt"></i> Skill Sprint
+          </h1>
+          <div class="text-sm opacity-80 flex items-center gap-2">
+            <i class="fa-solid fa-fire"></i>
+            <span id="streak">0</span> hari
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mb-6">
+          <div class="w-full bg-white/20 h-3 rounded-full">
             <div
               id="progressBar"
-              class="bg-white h-2 rounded"
-              style="width: 0%"
+              class="h-3 rounded-full bg-gradient-to-r from-blue-300 to-blue-500 transition-all duration-500"
             ></div>
           </div>
         </div>
 
         <!-- Question -->
-        <div id="quizBox">
-          <p id="question" class="mb-3 font-semibold"></p>
+        <div id="quizBox" class="fade-in">
+          <p id="question" class="text-lg font-semibold mb-4"></p>
           <div id="answers"></div>
         </div>
 
         <!-- Explanation -->
         <div
           id="explanation"
-          class="mt-4 text-sm bg-white/10 p-3 rounded hidden"
+          class="hidden mt-6 p-4 rounded-xl bg-white/10 text-sm fade-in"
         ></div>
 
-        <!-- Progress -->
-        <p class="text-center text-xs mt-4 opacity-70" id="progressText"></p>
+        <!-- Footer -->
+        <p class="text-center text-sm opacity-70 mt-6" id="progressText"></p>
       </div>
     </div>
 
     <!-- Modal -->
     <div
       id="modal"
-      class="fixed inset-0 bg-black/50 flex items-center justify-center hidden"
+      class="fixed inset-0 bg-black/60 flex items-center justify-center hidden"
     >
-      <div class="bg-white text-black rounded-2xl p-6 text-center w-80">
-        <h2 id="modalTitle" class="text-lg font-bold mb-2"></h2>
-        <p id="modalText" class="text-sm"></p>
+      <div
+        class="glass glow p-8 rounded-2xl text-center w-[90%] max-w-md fade-in"
+      >
+        <div class="text-4xl mb-3" id="modalIcon"></div>
+        <h2 id="modalTitle" class="text-xl font-bold mb-2"></h2>
+        <p id="modalText" class="text-sm opacity-80"></p>
         <button
           onclick="nextQuestion()"
-          class="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+          class="mt-6 bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-3 rounded-xl btn-hover"
         >
           Lanjut
         </button>
@@ -66,36 +118,37 @@
           q: 'Apa tujuan utama hook?',
           a: ['Menarik perhatian', 'Menjual langsung', 'Menjelaskan panjang'],
           c: 0,
-          exp: 'Hook digunakan untuk menghentikan scroll dan menarik perhatian dalam 3 detik pertama.',
+          exp: 'Hook menghentikan scroll dalam 3 detik pertama.',
         },
         {
-          q: 'CTA yang efektif adalah?',
+          q: 'CTA yang efektif?',
           a: ['Klik sekarang', 'Terserah', 'Mungkin nanti'],
           c: 0,
-          exp: 'CTA harus jelas, spesifik, dan mendorong aksi langsung.',
+          exp: 'CTA harus jelas & mendorong aksi.',
         },
         {
-          q: 'Konten viral biasanya punya?',
-          a: ['Emosi kuat', 'Tulisan panjang', 'Bahasa formal'],
+          q: 'Konten viral punya?',
+          a: ['Emosi kuat', 'Tulisan panjang', 'Formal'],
           c: 0,
-          exp: 'Emosi seperti penasaran, takut, atau senang membuat konten mudah viral.',
+          exp: 'Emosi memicu share.',
         },
         {
           q: 'Closing kuat harus?',
           a: ['Urgent', 'Santai', 'Tidak jelas'],
           c: 0,
-          exp: 'Urgency meningkatkan konversi karena user takut kehilangan peluang.',
+          exp: 'Urgency meningkatkan konversi.',
         },
         {
-          q: 'Headline terbaik adalah?',
-          a: ['Spesifik & jelas', 'Umum', 'Random'],
+          q: 'Headline terbaik?',
+          a: ['Spesifik', 'Umum', 'Random'],
           c: 0,
-          exp: 'Headline harus spesifik agar langsung kena target audience.',
+          exp: 'Spesifik = lebih tepat sasaran.',
         },
       ];
 
       let currentIndex = 0;
       let streak = localStorage.getItem('streak') || 0;
+
       document.getElementById('streak').innerText = streak;
       updateProgress();
 
@@ -107,8 +160,8 @@
         q.a.forEach((ans, i) => {
           let btn = document.createElement('button');
           btn.className =
-            'w-full bg-white/20 p-2 mt-2 rounded hover:bg-white/30';
-          btn.innerText = ans;
+            'w-full bg-white/10 p-4 mt-3 rounded-xl text-left btn-hover transition';
+          btn.innerHTML = `<i class="fa-regular fa-circle mr-2"></i>${ans}`;
           btn.onclick = () => checkAnswer(i);
           document.getElementById('answers').appendChild(btn);
         });
@@ -120,16 +173,20 @@
       function checkAnswer(i) {
         let q = quizData[currentIndex];
         let modal = document.getElementById('modal');
-        let title = document.getElementById('modalTitle');
-        let text = document.getElementById('modalText');
 
         if (i === q.c) {
-          title.innerText = '🎉 Jawaban Benar!';
-          text.innerText = 'Mantap! Skill kamu meningkat 🚀';
+          document.getElementById('modalIcon').innerHTML =
+            "<i class='fa-solid fa-circle-check text-green-400'></i>";
+          document.getElementById('modalTitle').innerText = 'Jawaban Benar!';
+          document.getElementById('modalText').innerText =
+            'Mantap! Skill kamu naik 🚀';
           updateStreak();
         } else {
-          title.innerText = '💪 Tetap Semangat!';
-          text.innerText = 'Jawaban belum tepat, belajar lagi ya!';
+          document.getElementById('modalIcon').innerHTML =
+            "<i class='fa-solid fa-face-smile-beam text-yellow-300'></i>";
+          document.getElementById('modalTitle').innerText = 'Tetap Semangat!';
+          document.getElementById('modalText').innerText =
+            'Belum tepat, lanjut belajar ya 💪';
         }
 
         document.getElementById('explanation').innerText = q.exp;
@@ -146,7 +203,7 @@
           loadQuestion();
         } else {
           document.getElementById('quizBox').innerHTML =
-            "<h2 class='text-center text-lg'>🎯 Selesai! Sampai besok!</h2>";
+            "<h2 class='text-center text-xl'>🎯 Selesai! Sampai besok!</h2>";
         }
       }
 
