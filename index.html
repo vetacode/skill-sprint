@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skill Sprint 5 Menit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-500 to-blue-800 min-h-screen text-white flex items-center justify-center"
+  >
+    <div class="w-full max-w-md p-4">
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-5 shadow-xl">
+        <h1 class="text-xl font-bold mb-2">⚡ Skill Sprint</h1>
+        <p class="text-sm opacity-80 mb-4">Upgrade skill dalam 5 menit</p>
+
+        <!-- Streak -->
+        <div class="mb-4">
+          <p class="text-sm">🔥 Streak: <span id="streak">0</span> hari</p>
+          <div class="w-full bg-white/20 h-2 rounded mt-2">
+            <div
+              id="progressBar"
+              class="bg-white h-2 rounded"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Question -->
+        <div id="quizBox">
+          <p id="question" class="mb-3 font-semibold"></p>
+          <div id="answers"></div>
+        </div>
+
+        <!-- Explanation -->
+        <div
+          id="explanation"
+          class="mt-4 text-sm bg-white/10 p-3 rounded hidden"
+        ></div>
+
+        <!-- Progress -->
+        <p class="text-center text-xs mt-4 opacity-70" id="progressText"></p>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      id="modal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center hidden"
+    >
+      <div class="bg-white text-black rounded-2xl p-6 text-center w-80">
+        <h2 id="modalTitle" class="text-lg font-bold mb-2"></h2>
+        <p id="modalText" class="text-sm"></p>
+        <button
+          onclick="nextQuestion()"
+          class="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Lanjut
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const quizData = [
+        {
+          q: 'Apa tujuan utama hook?',
+          a: ['Menarik perhatian', 'Menjual langsung', 'Menjelaskan panjang'],
+          c: 0,
+          exp: 'Hook digunakan untuk menghentikan scroll dan menarik perhatian dalam 3 detik pertama.',
+        },
+        {
+          q: 'CTA yang efektif adalah?',
+          a: ['Klik sekarang', 'Terserah', 'Mungkin nanti'],
+          c: 0,
+          exp: 'CTA harus jelas, spesifik, dan mendorong aksi langsung.',
+        },
+        {
+          q: 'Konten viral biasanya punya?',
+          a: ['Emosi kuat', 'Tulisan panjang', 'Bahasa formal'],
+          c: 0,
+          exp: 'Emosi seperti penasaran, takut, atau senang membuat konten mudah viral.',
+        },
+        {
+          q: 'Closing kuat harus?',
+          a: ['Urgent', 'Santai', 'Tidak jelas'],
+          c: 0,
+          exp: 'Urgency meningkatkan konversi karena user takut kehilangan peluang.',
+        },
+        {
+          q: 'Headline terbaik adalah?',
+          a: ['Spesifik & jelas', 'Umum', 'Random'],
+          c: 0,
+          exp: 'Headline harus spesifik agar langsung kena target audience.',
+        },
+      ];
+
+      let currentIndex = 0;
+      let streak = localStorage.getItem('streak') || 0;
+      document.getElementById('streak').innerText = streak;
+      updateProgress();
+
+      function loadQuestion() {
+        let q = quizData[currentIndex];
+        document.getElementById('question').innerText = q.q;
+        document.getElementById('answers').innerHTML = '';
+
+        q.a.forEach((ans, i) => {
+          let btn = document.createElement('button');
+          btn.className =
+            'w-full bg-white/20 p-2 mt-2 rounded hover:bg-white/30';
+          btn.innerText = ans;
+          btn.onclick = () => checkAnswer(i);
+          document.getElementById('answers').appendChild(btn);
+        });
+
+        document.getElementById('progressText').innerText =
+          `Soal ${currentIndex + 1} dari ${quizData.length}`;
+      }
+
+      function checkAnswer(i) {
+        let q = quizData[currentIndex];
+        let modal = document.getElementById('modal');
+        let title = document.getElementById('modalTitle');
+        let text = document.getElementById('modalText');
+
+        if (i === q.c) {
+          title.innerText = '🎉 Jawaban Benar!';
+          text.innerText = 'Mantap! Skill kamu meningkat 🚀';
+          updateStreak();
+        } else {
+          title.innerText = '💪 Tetap Semangat!';
+          text.innerText = 'Jawaban belum tepat, belajar lagi ya!';
+        }
+
+        document.getElementById('explanation').innerText = q.exp;
+        document.getElementById('explanation').classList.remove('hidden');
+
+        modal.classList.remove('hidden');
+      }
+
+      function nextQuestion() {
+        document.getElementById('modal').classList.add('hidden');
+        currentIndex++;
+
+        if (currentIndex < quizData.length) {
+          loadQuestion();
+        } else {
+          document.getElementById('quizBox').innerHTML =
+            "<h2 class='text-center text-lg'>🎯 Selesai! Sampai besok!</h2>";
+        }
+      }
+
+      function updateStreak() {
+        streak++;
+        localStorage.setItem('streak', streak);
+        document.getElementById('streak').innerText = streak;
+        updateProgress();
+      }
+
+      function updateProgress() {
+        let progress = (streak % 7) * 14;
+        document.getElementById('progressBar').style.width = progress + '%';
+      }
+
+      loadQuestion();
+    </script>
+  </body>
+</html>
